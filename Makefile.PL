@@ -21,8 +21,10 @@ my %WriteMakefileArgs = (
   'EXE_FILES' => [],
   'LICENSE' => 'perl',
   'NAME' => 'Geo::Coordinates::GMap',
-  'PREREQ_PM' => {},
-  'VERSION' => '0.04',
+  'PREREQ_PM' => {
+    'Exporter' => '5.57'
+  },
+  'VERSION' => '0.05',
   'test' => {
     'TESTS' => 't/*.t'
   }

@@ -1,11 +1,11 @@
 
 
 This archive contains the distribution Geo-Coordinates-GMap,
-version 0.04:
+version 0.05:
 
   Routines for converting decimal lat/lon to Google Map tiles, and back again.
 
-This software is copyright (c) 2010 by Aran Deltac.
+This software is copyright (c) 2011 by Aran Deltac.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
