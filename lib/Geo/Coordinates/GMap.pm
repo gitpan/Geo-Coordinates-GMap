@@ -1,20 +1,18 @@
 package Geo::Coordinates::GMap;
-BEGIN {
-  $Geo::Coordinates::GMap::VERSION = '0.05';
-}
-use strict;
-use warnings;
+$Geo::Coordinates::GMap::VERSION = '0.07';
+use strictures 1;
 
 =head1 NAME
 
-Geo::Coordinates::GMap - Routines for converting decimal lat/lon to Google Map tiles, and back again.
+Geo::Coordinates::GMap - Routines for converting decimal lat/lon to Google
+Map tiles, and back again.
 
 =head1 SYNOPSIS
 
     use Geo::Coordinates::GMap;
     my ($tile_x, $tile_y) = coord_to_gmap_tile( $lat, $lon, $zoom );
     my ($new_tile_x, $new_tile_y) = zoom_gmap_tile( $tile_x, $tile_y, $old_zoom, $new_zoom );
-    my ($x, $y) = gmap_tile_xy( $tile_x, $tile_y );
+    my ($x, $y) = gmap_tile_xy( $tile_x, $tile_y, $scale );
 
 =head1 DESCRIPTION
 
@@ -104,20 +102,26 @@ sub zoom_gmap_tile {
 
 =head2 gmap_tile_xy
 
-    my ($x, $y) = gmap_tile_xy( $tile_x, $tile_y );
+    my ($x, $y) = gmap_tile_xy( $tile_x, $tile_y, $scale );
 
 Given a tile's x and y coordinate as provided by coord_to_gmap_tile(), this function
-will return the pixel location within the tile.  This function will return a fractional
-number.  In most cases you will want to remove the fractional portion.
+will return the pixel location within the tile.
+
+The C<$scale> argument may be supplied which can be used to produce high-res tiles.
+At this time Google states that the scale can be C<1>, C<2>, or C<4> (only Google
+Maps API for Work customers can use C<4> with the Google Maps API).  If not specified
+the scale will default to C<1>.
 
 =cut
 
 sub gmap_tile_xy {
-    my ($tile_x, $tile_y) = @_;
+    my ($tile_x, $tile_y, $scale) = @_;
+
+    $scale ||= 1;
 
     return(
-        ($tile_x - int($tile_x)) * 256,
-        ($tile_y - int($tile_y)) * 256,
+        int( (($tile_x - int($tile_x)) * 256 * $scale) + 0.5 ),
+        int( (($tile_y - int($tile_y)) * 256 * $scale) + 0.5 ),
     );
 }
 
@@ -135,7 +139,7 @@ lat/lon decimal coordinates.
 
 =head1 AUTHOR
 
-Aran Clary Deltac <bluefeet@gmail.com>
+Aran Clary Deltac <bluefeetE<64>gmail.com>
 
 =head1 LICENSE
 
